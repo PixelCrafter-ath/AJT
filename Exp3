@@ -1,0 +1,38 @@
+jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Education Information</title>
+</head>
+<body>
+<%
+  String degree = request.getParameter("degree");
+  String university = request.getParameter("university");
+  
+  if(degree == null || degree == null){
+  %>
+    <h2> Fill Education Details </h2>
+    <form action ="" method = "post">
+    Degree:
+    <input type = "text" name = "degree"><br><br>
+    University:
+    <input type = "text" name = "university"><br><br>
+    <input type="submit" value = "Submit">
+    </form>
+    
+<%
+  } else{
+%>
+    <h2> Education Detail Received</h2>
+    <p><b>Degree:</b> <%= degree %></p>
+    <p><b>University:</b> <%= university %></p>
+    <br>
+    <a href= "education.jsp" > Go Back</a>
+    
+<%
+  }
+%>
+</body>
+</html>
