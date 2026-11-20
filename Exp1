@@ -1,0 +1,53 @@
+servlet:
+package pack;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Package")
+public class Package extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.setContentType("text/html");
+		PrintWriter out= response.getWriter();
+		String user = request.getParameter("uname");
+		String pass = request.getParameter("pass");
+		if("admin".equals(user) && "12345".equals(pass)) {
+			out.println("<h2>Login Sucessfull</h2>");
+			out.println("<h3>Welcome Admin</h3>");
+		}
+		else {
+			out.println("<h2> Invalid Username and Password </h2>");
+		}
+		
+		
+	}
+
+}
+
+html:
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Login Form</title>
+</head>
+<body>
+<h2>Login Form </h2>
+<form action ="Package" method = "get">
+Username:
+<input type = "text" name ="uname"> <br><br>
+Password:
+<input type="password" name ="pass"><br><br>
+<input type="submit" value="login">
+
+</form>
+</body>
+</html>
