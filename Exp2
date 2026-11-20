@@ -1,0 +1,136 @@
+servlet:
+package pack;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/ContactServlet")
+public class ContactServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		session.setAttribute("email", request.getParameter("email"));
+		session.setAttribute("phone",request.getParameter("phone"));
+		response.sendRedirect("education.html");
+	}
+
+}
+
+jsp:
+package pack;
+
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+@WebServlet("/PersonalServlet")
+public class PersonalServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    HttpSession session = request.getSession();
+    session.setAttribute("name",request.getParameter("name"));
+    session.setAttribute("age",request.getParameter("age"));
+    response.sendRedirect("contact.html");
+  
+	}
+
+}
+
+servlet:
+package pack;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+
+@WebServlet("/EducationServlet")
+public class EducationServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		session.setAttribute("degree",request.getParameter("degree"));
+		session.setAttribute("university",request.getParameter("university"));
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		out.println("<html><body>");
+		out.println("<h2>Final User Information</h2>");
+		out.println("Name:"+ session.getAttribute("name")+"<br>");
+		out.println("Age:" + session.getAttribute("age")+"<br>");
+		out.println("Email:" + session.getAttribute("email")+"<br>");
+		out.println("Phone:" + session.getAttribute("phone")+"<br>");
+		out.println("Degree:" + session.getAttribute("degree")+"<br>");
+		out.println("University:" + session.getAttribute("university")+"<br>");
+		out.println("</body></html>");
+	}
+
+}
+
+html:
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Step: 2 Contact Details</title>
+</head>
+<body>
+      <h2>Step 2: Contact Details</h2>
+      <form action = "ContactServlet" method="post">
+      Email:<input type="text"  name="email"><br><br>
+      Phone:<input type="text"  name="phone"><br><br>
+      <input type="submit"   value="Next" >
+      </form>
+</body>
+</html>
+
+html:
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Step 3: Education Details</title>
+</head>
+<body>
+<h2>Step 3: Education Details</h2>
+<form action="EducationServlet" method="post">
+Degree: <input type="text" name="degree"><br><br>
+University:<input type="text" name="university"><br><br>
+<input type="submit" value="Submit">
+ </form>
+</body>
+</html>
+
+html:
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Personal details</title>
+</head>
+<body>
+<form action = "PersonalServlet" method = "post">
+name: <input type="text" name="name"><br><br>
+age: <input type="text" name="age"><br><br>
+<input type="Submit" value="Next">
+</form>
+</body>
+</html>
