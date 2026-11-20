@@ -1,0 +1,80 @@
+Register jsp:
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User Registration</title>
+</head>
+<body bgcolor="pink">
+<center>
+<h2>User Registration Form</h2>
+<form action="Registerservlet" method="post">
+    Name: <input type="text" name="name"><br><br><br>
+    Email: <input type="text" name="email"><br><br><br>
+    Password: <input type="password" name="password"><br><br><br>
+    <input type="submit" value="Register">
+</form>
+</center>
+</body>
+</html>
+
+
+
+servlet:
+package jdbcpackage;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet("/Registerservlet")
+public class Registerservlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/studentdb", "root", "Atharva@1234");
+
+            PreparedStatement ps = con.prepareStatement(
+                    "insert into users(name,email,password) values(?,?,?)");
+            ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setString(3, password);
+
+            int i = ps.executeUpdate();
+            if (i > 0) {
+                response.getWriter().println("Registration Successful!");
+            } else {
+                response.getWriter().println("Registration Failed!");
+            }
+            con.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().println("<pre>");
+            e.printStackTrace(response.getWriter());
+            response.getWriter().println("</pre>");
+        }
+    }
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
